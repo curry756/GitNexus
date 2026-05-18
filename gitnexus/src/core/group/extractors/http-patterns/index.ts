@@ -7,6 +7,7 @@ import { GO_HTTP_PLUGIN } from './go.js';
 import { PYTHON_HTTP_PLUGIN } from './python.js';
 import { PHP_HTTP_PLUGIN } from './php.js';
 import { JAVASCRIPT_HTTP_PLUGIN, TYPESCRIPT_HTTP_PLUGIN, TSX_HTTP_PLUGIN } from './node.js';
+import { SWIFT_HTTP_PLUGIN } from './swift.js';
 
 export type {
   HttpDetection,
@@ -40,6 +41,7 @@ const REGISTRY: Record<string, HttpLanguagePlugin> = {
   '.jsx': JAVASCRIPT_HTTP_PLUGIN,
   '.ts': TYPESCRIPT_HTTP_PLUGIN,
   '.tsx': TSX_HTTP_PLUGIN,
+  '.swift': SWIFT_HTTP_PLUGIN,
 };
 
 if (KOTLIN_HTTP_PLUGIN) {
@@ -61,7 +63,7 @@ if (KOTLIN_HTTP_PLUGIN) {
  * regex fallback for them was never very accurate. The graph-assisted
  * Strategy A still handles them via the ingestion pipeline.
  */
-export const HTTP_SCAN_GLOB = '**/*.{ts,tsx,js,jsx,java,kt,kts,go,py,php}';
+export const HTTP_SCAN_GLOB = '**/*.{ts,tsx,js,jsx,java,kt,kts,go,py,php,swift}';
 
 /**
  * Return the HTTP plugin registered for the given file's extension,
