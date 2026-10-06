@@ -1,4 +1,4 @@
-import Swift from 'tree-sitter-swift';
+import { requireVendoredGrammar } from '../../../tree-sitter/vendored-grammars.js';
 import {
   compilePatterns,
   runCompiledPatterns,
@@ -6,6 +6,21 @@ import {
   type LanguagePatterns,
 } from '../tree-sitter-scanner.js';
 import type { HttpDetection, HttpLanguagePlugin } from './types.js';
+
+// The Swift grammar is one of the seven GitNexus vendors inside its own
+// package (c/dart/proto/swift/kotlin/objc/zig), so it is loaded through
+// requireVendoredGrammar rather than imported directly. A direct
+// `import ... from 'tree-sitter-swift'` fails the TypeScript build outright
+// when the binding is absent, which is what the 1.6.5 fork did by carrying its
+// own vendor/ copy as an optionalDependency. Loading it the way kotlin.ts does
+// means an unavailable native binding degrades to "no Swift HTTP detections"
+// instead of breaking the build for every language.
+let Swift: unknown | null = null;
+try {
+  Swift = requireVendoredGrammar('tree-sitter-swift');
+} catch {
+  Swift = null;
+}
 
 /**
  * Swift HTTP plugin. Targets the verb-method style that wraps URLRequest /
